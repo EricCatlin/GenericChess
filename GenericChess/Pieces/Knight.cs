@@ -39,7 +39,7 @@ namespace GenericChess
             bool valid = false;
 
             //Check if end_pos is out of bounds
-            if (end_pos.x < 0 || end_pos.x > 8 || end_pos.y < 0 || end_pos.y > 8) return false; // Off board
+            if (end_pos.x < 0 || end_pos.x > 7 || end_pos.y < 0 || end_pos.y > 7) return false; // Off board
 
             //Get the delta between curent position and final position
             Vector2 delta = position.Delta(end_pos);
@@ -57,7 +57,8 @@ namespace GenericChess
                 }
             }
 
-
+            if (valid && color == Color.White && board.WhiteKing != null) valid = board.WhiteKing.SafetyCheck(board);
+            if (valid && color == Color.Black && board.BlackKing != null) valid = board.BlackKing.SafetyCheck(board);
 
             return valid;
         }

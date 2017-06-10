@@ -9,6 +9,9 @@ namespace GenericChess
     class Board
     {
         public List<IPiece> pieces;
+        public King BlackKing;
+        public King WhiteKing;
+
         public Board()
         {
             pieces = new List<IPiece>();

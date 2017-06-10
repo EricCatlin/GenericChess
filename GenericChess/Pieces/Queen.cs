@@ -53,6 +53,11 @@ namespace GenericChess
                     delta.y += (delta.y > 0) ? -1 : (delta.y < 0) ? 1 : 0;
                 }
             }
+
+            if (valid && color == Color.White && board.WhiteKing != null) valid = board.WhiteKing.SafetyCheck(board);
+            if (valid && color == Color.Black && board.BlackKing != null) valid = board.BlackKing.SafetyCheck(board);
+
+
             return valid;
         }
 

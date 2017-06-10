@@ -83,6 +83,26 @@ namespace GenericChess
                     if (board.pieces.Where(x => x.position.isEqual(position.AddVector(point)) && x.color == color).Count() > 0)
                         return false;
             }
+
+
+            //Check if king would be attacking or just moving
+            var end_point_piece = board.GetPieceAt(end_pos);
+            if (end_point_piece != null && end_point_piece.color == this.color) return false;
+
+            //Check if final position puts King in check
+            //Temp set piece location to end_pos
+            if (end_point_piece != null)
+            {
+                board.pieces.Remove(end_point_piece);
+            }
+            var real_pos = this.position;
+            this.position = end_pos;
+            if (valid && color == Color.White && board.WhiteKing != null) valid = board.WhiteKing.SafetyCheck(board);
+            if (valid && color == Color.Black && board.BlackKing != null) valid = board.BlackKing.SafetyCheck(board);
+
+            this.position = real_pos;
+            if (end_point_piece != null) board.pieces.Add(end_point_piece);
+
             return valid;
         }
 
