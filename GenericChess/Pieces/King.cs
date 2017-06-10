@@ -19,8 +19,10 @@ namespace GenericChess
         public bool SafetyCheck(Board board)
         {
             //IsInCheck
-            foreach (var piece in board.pieces.Where(x => x.color != this.color))
+            var opponents = board.pieces.Where(x => x.color != this.color);
+            for (var i = opponents.Count()-1; i >= 0; i--)
             {
+                var piece = opponents.ElementAt(i);
                 if (piece.IsMoveValid(board, position)) return false;
             }
             return true;

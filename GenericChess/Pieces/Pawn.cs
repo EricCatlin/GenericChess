@@ -8,6 +8,9 @@ namespace GenericChess
 {
     class Pawn : IPiece
     {
+        //**KnownBug En Passant not accounted for
+
+
         public Pawn(Vector2 position, Color color)
         {
             this.position = position;
@@ -104,11 +107,6 @@ namespace GenericChess
             if (end_point_piece != null) board.pieces.Add(end_point_piece);
 
             return valid;
-        }
-
-        public bool Move(Vector2 position)
-        {
-            throw new NotImplementedException();
         }
     }
 }

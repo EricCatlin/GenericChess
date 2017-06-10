@@ -60,10 +60,5 @@ namespace GenericChess
 
             return valid;
         }
-
-        public bool Move(Vector2 position)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

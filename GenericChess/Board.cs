@@ -29,6 +29,22 @@ namespace GenericChess
                 return piece.First();
             else return null;
         }
+
+        public bool MovePiece(IPiece piece, Vector2 end_pos)
+        {
+            if (piece.IsMoveValid(this, end_pos))
+            {
+                var opponent = GetPieceAt(end_pos);
+                if (opponent != null)
+                    pieces.Remove(opponent);
+                piece.position = end_pos;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     //Vector2 holds a 2d point and some common operations.

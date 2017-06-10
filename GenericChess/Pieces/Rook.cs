@@ -8,14 +8,17 @@ namespace GenericChess
 {
     class Rook : IPiece
     {
+        //**KnownBug Casteling not accounted for
+
+
+
         public Rook(Vector2 position, Color color)
         {
             this.position = position;
             this.color = color;
         }
 
-        
-
+       
         public Color color
         {
             get; set;
@@ -34,11 +37,11 @@ namespace GenericChess
             Vector2 delta = position.Delta(end_pos);
 
             //Diagonal/Stationary check
-            if ((delta.x != 0 && delta.y != 0) || (delta.x==0 && delta.y==0)) return false;
+            if ((delta.x != 0 && delta.y != 0) || (delta.x == 0 && delta.y == 0)) return false;
 
             //Check if final position is valid
             var end_point_piece = board.GetPieceAt(end_pos);
-            if(end_point_piece == null || end_point_piece.color != this.color)
+            if (end_point_piece == null || end_point_piece.color != this.color)
             {
                 valid = true;
                 //Move x towards 0
@@ -47,7 +50,7 @@ namespace GenericChess
                 delta.y += (delta.y > 0) ? -1 : (delta.y < 0) ? 1 : 0;
 
                 //Check if path is clear to arrive at valid end-point
-                while (delta.x!=0 || delta.y != 0)
+                while (delta.x != 0 || delta.y != 0)
                 {
                     //Check for collision
                     var collision_check = board.GetPieceAt(position.AddVector(delta));
@@ -65,11 +68,6 @@ namespace GenericChess
             if (valid && color == Color.Black && board.BlackKing != null) valid = board.BlackKing.SafetyCheck(board);
 
             return valid;
-        }
-
-        public bool Move(Vector2 position)
-        {
-            throw new NotImplementedException();
         }
     }
 }
