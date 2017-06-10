@@ -16,6 +16,7 @@ namespace GenericChess
             Tests.TestCastles();
             Tests.TestRooks();
             Tests.TestQueen();
+            Tests.TestKing();
         }
 
 
