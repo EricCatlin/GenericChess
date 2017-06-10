@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GenericChess
 {
-    class Castle : IPiece
+    class Bishop : IPiece
     {
-        public Castle(Vector2 position, Color color)
+        public Bishop(Vector2 position, Color color)
         {
             this.position = position;
             this.color = color;
@@ -33,8 +33,9 @@ namespace GenericChess
             //Get the delta between curent position and final position
             Vector2 delta = position.Delta(end_pos);
 
-            //Diagonal/Stationary check
-            if ((delta.x != 0 && delta.y != 0) || (delta.x==0 && delta.y==0)) return false;
+            //Stationary check
+            if (delta.x==0 && delta.y==0) return false;
+            if (!(delta.x == delta.y || delta.x == -delta.y)) return false; //Not diagonal
 
             //Check if final position is valid
             var end_point_piece = board.GetPieceAt(end_pos);
@@ -60,8 +61,9 @@ namespace GenericChess
                 }
             }
 
-            
 
+            if (valid && color == Color.White && board.WhiteKing != null) valid = board.WhiteKing.SafetyCheck(board);
+            if (valid && color == Color.Black && board.BlackKing != null) valid = board.BlackKing.SafetyCheck(board);
 
             return valid;
         }
