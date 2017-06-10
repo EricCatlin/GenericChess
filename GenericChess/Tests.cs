@@ -15,10 +15,12 @@ namespace GenericChess
             KingStandardMovement();
             KingBlockedMovementAndAttacks();
             KingCheckChecking();
-           
-           
+
+
 
         }
+
+
 
         //Place some pawns in between the king and an emeny rook
         private static void KingCheckChecking()
@@ -45,7 +47,7 @@ namespace GenericChess
             Debug.Assert(KW.IsMoveValid(board, new Vector2(0, 7)), "Moves into corner with enemies gaurding because pawn is protecting path");
 
             //Move king to corner covered by rook, but protected by pawn
-            KW.position = new Vector2(0, 7); 
+            KW.position = new Vector2(0, 7);
             //Move king freely
             Debug.Assert(!KW.IsMoveValid(board, KW.position.AddVector(new Vector2(0, 1))), "Move down, out of bounds");
             Debug.Assert(!KW.IsMoveValid(board, KW.position.AddVector(new Vector2(-1, 0))), "Move left, out of bounds");
@@ -55,10 +57,10 @@ namespace GenericChess
 
             //Attempting to Move pawn expsoses king to check
             Debug.Assert(!protector_pawn.IsMoveValid(board, protector_pawn.position.AddVector(new Vector2(0, -1))), "Can no longer move up because it would expose king to check");
-            
+
             //Killing rook with pawn protects king
             Debug.Assert(protector_pawn.IsMoveValid(board, protector_pawn.position.AddVector(new Vector2(1, -1))), "Kill rook. King is safe");
-            
+
             //Put another blocking pawn, then move original pawn. King still protected
             var protector_pawn_2 = new Pawn(new Vector2(5, 2), Color.White);
             board.pieces.Add(protector_pawn_2);
@@ -170,7 +172,7 @@ namespace GenericChess
             Debug.Assert(!QW.IsMoveValid(board, QW.position.AddVector(new Vector2(0, -7))), "Enemy is blocking my route");
         }
 
-        public static void TestRooks()
+        public static void TestBishops()
         {
             var board = new Board();
             //Set them up in standard positions
@@ -344,6 +346,100 @@ namespace GenericChess
             Debug.Assert(!PW1.IsMoveValid(board, new Vector2(0, 5)), "Failed to catch attack against own team");
             board.pieces.Add(new Pawn(new Vector2(0, 2), Color.Black));
             Debug.Assert(!PB1.IsMoveValid(board, new Vector2(0, 2)), "Failed to catch attack against own team");
+        }
+        internal static void PlayGame()
+        {
+            var board = new Board();
+            IPiece PW0 = new Pawn(new Vector2(0, 6), Color.White),
+            PW1 = new Pawn(new Vector2(1, 6), Color.White),
+            PW2 = new Pawn(new Vector2(2, 6), Color.White),
+            PW3 = new Pawn(new Vector2(3, 6), Color.White),
+            PW4 = new Pawn(new Vector2(4, 6), Color.White),
+            PW5 = new Pawn(new Vector2(5, 6), Color.White),
+            PW6 = new Pawn(new Vector2(6, 6), Color.White),
+            PW7 = new Pawn(new Vector2(7, 6), Color.White),
+            PB0 = new Pawn(new Vector2(0, 1), Color.Black),
+            PB1 = new Pawn(new Vector2(1, 1), Color.Black),
+            PB2 = new Pawn(new Vector2(2, 1), Color.Black),
+            PB3 = new Pawn(new Vector2(3, 1), Color.Black),
+            PB4 = new Pawn(new Vector2(4, 1), Color.Black),
+            PB5 = new Pawn(new Vector2(5, 1), Color.Black),
+            PB6 = new Pawn(new Vector2(6, 1), Color.Black),
+            PB7 = new Pawn(new Vector2(7, 1), Color.Black),
+
+            KW0 = new Knight(new Vector2(1, 7), Color.White),
+            KW1 = new Knight(new Vector2(6, 7), Color.White),
+            KB0 = new Knight(new Vector2(1, 0), Color.Black),
+            KB1 = new Knight(new Vector2(6, 0), Color.Black),
+
+            QW = new Queen(new Vector2(3, 7), Color.White),
+            QB = new Queen(new Vector2(3, 0), Color.Black),
+
+            BW0 = new Bishop(new Vector2(2, 7), Color.White),
+            BW1 = new Bishop(new Vector2(5, 7), Color.White),
+            BB0 = new Bishop(new Vector2(2, 0), Color.Black),
+            BB1 = new Bishop(new Vector2(5, 0), Color.Black),
+
+            KW = new King(new Vector2(4, 7), Color.White),
+            KB = new King(new Vector2(4, 0), Color.Black);
+
+            board.pieces.Add(PW0);
+            board.pieces.Add(PW1);
+            board.pieces.Add(PW2);
+            board.pieces.Add(PW3);
+            board.pieces.Add(PW4);
+            board.pieces.Add(PW5);
+            board.pieces.Add(PW6);
+            board.pieces.Add(PW7);
+            board.pieces.Add(PB0);
+            board.pieces.Add(PB1);
+            board.pieces.Add(PB2);
+            board.pieces.Add(PB3);
+            board.pieces.Add(PB4);
+            board.pieces.Add(PB5);
+            board.pieces.Add(PB6);
+            board.pieces.Add(PB7);
+            board.pieces.Add(KW0);
+            board.pieces.Add(KW1);
+            board.pieces.Add(KB0);
+            board.pieces.Add(KB1);
+            board.pieces.Add(QW);
+            board.pieces.Add(QB);
+            board.pieces.Add(BW0);
+            board.pieces.Add(BW1);
+            board.pieces.Add(BB0);
+            board.pieces.Add(BB1);
+            board.pieces.Add(KW);
+            board.pieces.Add(KB);
+
+            board.WhiteKing = (King)KW;
+            board.BlackKing = (King)KB;
+
+            Debug.Assert(board.MovePiece(PW4, PW4.position.AddVector(new Vector2(0, -2))), "E4");
+            Debug.Assert(board.MovePiece(PB4, PB4.position.AddVector(new Vector2(0, 2))), "E5");
+
+            Debug.Assert(board.MovePiece(BW1, BW1.position.AddVector(new Vector2(-3, -3))), "Bc4");
+            Debug.Assert(board.MovePiece(BB1, BB1.position.AddVector(new Vector2(-3, 3))), "Bc5");
+
+            Debug.Assert(board.MovePiece(QW, QW.position.AddVector(new Vector2(4, -4))), "Qh5");
+            Debug.Assert(board.MovePiece(KB1, KB1.position.AddVector(new Vector2(-1, 2))), "Nf6");
+
+            Debug.Assert(board.MovePiece(QW, QW.position.AddVector(new Vector2(-2, -2))), "Qxf7");
+
+
+            Debug.Assert(!board.MovePiece(KB, KB.position.AddVector(new Vector2(-1, -1))), "Check check");
+            Debug.Assert(!board.MovePiece(KB, KB.position.AddVector(new Vector2(-1, 1))), "Check check");
+            Debug.Assert(!board.MovePiece(KB, KB.position.AddVector(new Vector2(1, 1))), "Check check");
+            Debug.Assert(!board.MovePiece(KB, KB.position.AddVector(new Vector2(1, -1))), "Check check");
+
+            Debug.Assert(!board.MovePiece(KB, KB.position.AddVector(new Vector2(0, -1))), "Check check");
+            Debug.Assert(!board.MovePiece(KB, KB.position.AddVector(new Vector2(0, 1))), "Check check");
+            Debug.Assert(!board.MovePiece(KB, KB.position.AddVector(new Vector2(1, 0))), "Check check");
+            Debug.Assert(!board.MovePiece(KB, KB.position.AddVector(new Vector2(-1, 0))), "Check check");
+
+
+
+
         }
     }
 }
