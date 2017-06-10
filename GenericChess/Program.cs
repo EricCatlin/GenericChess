@@ -14,9 +14,11 @@ namespace GenericChess
             Tests.TestPawns();
             Tests.TestKnights();
             Tests.TestCastles();
-            Tests.TestRooks();
+            Tests.TestBishops();
             Tests.TestQueen();
             Tests.TestKing();
+
+            Tests.PlayGame();
         }
 
 
