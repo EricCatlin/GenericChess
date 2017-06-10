@@ -17,12 +17,7 @@ namespace GenericChess
             Tests.TestBishops();
             Tests.TestQueen();
             Tests.TestKing();
-
             Tests.PlayGame();
         }
-
-
     }
-
-    
 }
