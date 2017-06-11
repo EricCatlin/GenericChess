@@ -43,17 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
-    <Compile Include="Pieces\King.cs" />
-    <Compile Include="Pieces\Queen.cs" />
-    <Compile Include="Pieces\Bishop.cs" />
-    <Compile Include="Pieces\IPiece.cs" />
-    <Compile Include="Pieces\Rook.cs" />
-    <Compile Include="Pieces\Knight.cs" />
-    <Compile Include="Pieces\Pawn.cs" />
+    <Compile Include="Chess\Board.cs" />
+    <Compile Include="Chess\Pieces\King.cs" />
+    <Compile Include="Chess\Pieces\Queen.cs" />
+    <Compile Include="Chess\Pieces\Bishop.cs" />
+    <Compile Include="Chess\Pieces\IPiece.cs" />
+    <Compile Include="Chess\Pieces\Rook.cs" />
+    <Compile Include="Chess\Pieces\Knight.cs" />
+    <Compile Include="Chess\Pieces\Pawn.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests.cs" />
+    <Compile Include="Chess\Vector2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
