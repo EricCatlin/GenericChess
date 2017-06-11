@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace GenericChess
 {
+    //Pawn was the first piece implemented. I used pre-built lists of possible moves including sliding positions for first move. 
+    //If I were to redo it I would just dynamicly determine validity the way I did in Rook/King classes since it reduces complexity
     class Pawn : IPiece
     {
         //**KnownBug En Passant not accounted for
 
+        public Color color { get; set; }
+        public Vector2 position { get; set; }
+        public bool hasMoved { get; set; }
+        public bool isCastling { get; set; }
 
         public Pawn(Vector2 position, Color color)
         {
@@ -33,13 +39,6 @@ namespace GenericChess
                 { Color.White,  new List<Vector2>() {new Vector2(1, -1), new Vector2(-1, -1) } },
             };
 
-        public Color color
-        {
-            get; set;
-        }
-
-        public Vector2 position { get; set; }
-
         public bool IsMoveValid(Board board, Vector2 end_pos)
         {
             bool valid = false;
@@ -54,7 +53,7 @@ namespace GenericChess
             //Check if pawn is sliding 2 spaces vertically and pawn is in starting position
             if (delta.x == 0 && ((delta.y == 2 && color == Color.Black && position.y == 1) || (delta.y == -2 && color == Color.White && position.y == 6)))
             {
-                var possible_slides = initial_slides[this.color].Where(x => x.First().x == delta.x && x.First().y == delta.y);
+                var possible_slides = initial_slides[color].Where(x => x.First().x == delta.x && x.First().y == delta.y);
                 if (possible_slides.Count() > 0) valid = true;
                 foreach (var path in possible_slides)
                 {

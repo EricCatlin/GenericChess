@@ -11,6 +11,8 @@ namespace GenericChess
         Color color { get; set; }
         Vector2 position { get; set; }
         bool IsMoveValid(Board board, Vector2 end_pos);
+        bool hasMoved { get; set; }
+        bool isCastling { get; set; }
     }
     public enum Color
     {
