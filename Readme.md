@@ -1,5 +1,5 @@
 # GenericChess
 ---------------
-This little console app which can emulate a chess game state and can validate moves against the current state of the board.
+A console app which can emulate a chess game state and can validate moves against the current state of the board.
 
 ![image](https://user-images.githubusercontent.com/5042787/27007998-2c415c20-4e1b-11e7-9188-7566177eb45d.png)
