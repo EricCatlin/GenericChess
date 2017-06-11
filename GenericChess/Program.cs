@@ -39,10 +39,10 @@ namespace GenericChess
             Board board = new Board(init: true);
 
             //Get reference to piece PW0 (Pawn White 0), the leftmost white pawn
-            IPiece PW0 = board.piece_index["PW0"];
+            IPiece PW0 = board.PieceIndex["PW0"];
 
             //Check if moving down 2 rows is valid
-            var isValid = board.IsMoveValid(PW0, PW0.position.AddVector(0, -2));
+            var isValid = board.IsMoveValid(PW0, PW0.Position.AddVector(0, -2));
             Debug.WriteLine("Relative Position Check: " + isValid);
 
             //Check if moving to an absolute position is valid
@@ -50,10 +50,10 @@ namespace GenericChess
             Debug.WriteLine("Absolute Position Check: " + isValidAlternate);
 
             //Attempt to apply the move action, validates internally and returns wether the move occured
-            var moved = board.MovePiece(PW0, PW0.position.AddVector(0, -2));
+            var moved = board.MovePiece(PW0, PW0.Position.AddVector(0, -2));
 
             //Debug out if the move did not leave the piece where expected
-            Debug.WriteLineIf(PW0.position.isEqual(new Vector2(0, 4)), "Piece moved successfully");
+            Debug.WriteLineIf(PW0.Position.isEqual(new Vector2(0, 4)), "Piece moved successfully");
         }
     }
 }

@@ -12,55 +12,55 @@ namespace GenericChess
     {
         //**KnownBug En Passant not accounted for
 
-        public Color color { get; set; }
-        public Vector2 position { get; set; }
-        public bool hasMoved { get; set; }
-        public bool isCastling { get; set; }
+        public Color Color { get; set; }
+        public Vector2 Position { get; set; }
+        public bool HasMoved { get; set; }
+        public bool IsCastling { get; set; }
 
         public Pawn(Vector2 position, Color color)
         {
-            this.position = position;
-            this.color = color;
+            this.Position = position;
+            this.Color = color;
         }
 
         //Pawn Moves
-        Dictionary<Color, List<Vector2>> standard_moves = new Dictionary<Color, List<Vector2>> {
+        Dictionary<Color, List<Vector2>> StandardMoves = new Dictionary<Color, List<Vector2>> {
                 { Color.Black,  new List<Vector2>() {new Vector2(0, 1) } },
                 { Color.White,  new List<Vector2>() {new Vector2(0, -1) } },
             };
         //Slide 2 forward
-        Dictionary<Color, List<List<Vector2>>> initial_slides = new Dictionary<Color, List<List<Vector2>>> {
+        Dictionary<Color, List<List<Vector2>>> InitialSlides = new Dictionary<Color, List<List<Vector2>>> {
                 { Color.Black,  new List<List<Vector2>>() { new List<Vector2>() { new Vector2(0,2), new Vector2(0, 1) } } },
                 { Color.White,  new List<List<Vector2>>() { new List<Vector2>() { new Vector2(0,-2), new Vector2(0,-1) } } },
             };
         //Attack Diaganal
-        Dictionary<Color, List<Vector2>> standard_attacks = new Dictionary<Color, List<Vector2>> {
+        Dictionary<Color, List<Vector2>> StandardAttacks = new Dictionary<Color, List<Vector2>> {
                 { Color.Black,  new List<Vector2>() {new Vector2(1, 1), new Vector2(-1, 1) } },
                 { Color.White,  new List<Vector2>() {new Vector2(1, -1), new Vector2(-1, -1) } },
             };
 
-        public bool IsMoveValid(Board board, Vector2 end_pos)
+        public bool IsMoveValid(Board board, Vector2 endPosition)
         {
             bool valid = false;
 
-            //Check if end_pos is out of bounds
-            if (end_pos.x < 0 || end_pos.x > 7 || end_pos.y < 0 || end_pos.y > 7) return false; // Off board
+            //Check if endPosition is out of bounds
+            if (endPosition.x < 0 || endPosition.x > 7 || endPosition.y < 0 || endPosition.y > 7) return false; // Off board
 
             //Get the delta between curent position and final position
-            Vector2 delta = position.Delta(end_pos);
+            Vector2 delta = Position.Delta(endPosition);
 
             //Based on the delta, determine if move is legal
             //Check if pawn is sliding 2 spaces vertically and pawn is in starting position
-            if (delta.x == 0 && ((delta.y == 2 && color == Color.Black && position.y == 1) || (delta.y == -2 && color == Color.White && position.y == 6)))
+            if (delta.x == 0 && ((delta.y == 2 && Color == Color.Black && Position.y == 1) || (delta.y == -2 && Color == Color.White && Position.y == 6)))
             {
-                var possible_slides = initial_slides[color].Where(x => x.First().x == delta.x && x.First().y == delta.y);
-                if (possible_slides.Count() > 0) valid = true;
-                foreach (var path in possible_slides)
+                var possibleSlides = InitialSlides[Color].Where(x => x.First().x == delta.x && x.First().y == delta.y);
+                if (possibleSlides.Count() > 0) valid = true;
+                foreach (var path in possibleSlides)
                 {
                     foreach (var point in path)
                     {
-                        var relative_position = position.AddVector(point);
-                        var conflicts = board.pieces.Where(x => x.position.isEqual(relative_position));
+                        var relativePosition = Position.AddVector(point);
+                        var conflicts = board.Pieces.Where(x => x.Position.isEqual(relativePosition));
                         if (conflicts.Count() > 0)
                         {
                             return false;
@@ -71,39 +71,39 @@ namespace GenericChess
             else
             {
                 //Check if this delta conforms to a standard move
-                var possible_moves = standard_moves[color].Where(x => x.x == delta.x && x.y == delta.y);
-                if (possible_moves.Count() > 0) valid = true;
-                foreach (var point in possible_moves)
-                    if (board.pieces.Where(x => x.position.isEqual(position.AddVector(point))).Count() > 0)
+                var possibleMoves = StandardMoves[Color].Where(x => x.x == delta.x && x.y == delta.y);
+                if (possibleMoves.Count() > 0) valid = true;
+                foreach (var point in possibleMoves)
+                    if (board.Pieces.Where(x => x.Position.isEqual(Position.AddVector(point))).Count() > 0)
                         return false;
 
                 //Check if this delta conforms to a standard attack
-                var possible_attacks = standard_attacks[color].Where(x => x.x == delta.x && x.y == delta.y);
-                if (possible_attacks.Count() > 0) valid = true;
+                var possibleAttacks = StandardAttacks[Color].Where(x => x.x == delta.x && x.y == delta.y);
+                if (possibleAttacks.Count() > 0) valid = true;
                 //Check if there are enemies present at the attack location
-                foreach (var point in possible_attacks)
-                    if (board.pieces.Where(x => x.position.isEqual(position.AddVector(point)) && x.color == color).Count() > 0)
+                foreach (var point in possibleAttacks)
+                    if (board.Pieces.Where(x => x.Position.isEqual(Position.AddVector(point)) && x.Color == Color).Count() > 0)
                         return false;
             }
 
 
             //Check if king would be attacking or just moving
-            var end_point_piece = board.GetPieceAt(end_pos);
-            if (end_point_piece != null && end_point_piece.color == this.color) return false;
+            var pieceAtDestination = board.GetPieceAt(endPosition);
+            if (pieceAtDestination != null && pieceAtDestination.Color == this.Color) return false;
 
             //Check if final position puts King in check
-            //Temp set piece location to end_pos
-            if (end_point_piece != null)
+            //Temp set piece location to endPosition
+            if (pieceAtDestination != null)
             {
-                board.pieces.Remove(end_point_piece);
+                board.Pieces.Remove(pieceAtDestination);
             }
-            var real_pos = this.position;
-            this.position = end_pos;
-            if (valid && color == Color.White && board.WhiteKing != null) valid = board.WhiteKing.SafetyCheck(board);
-            if (valid && color == Color.Black && board.BlackKing != null) valid = board.BlackKing.SafetyCheck(board);
+            var originalPosition = this.Position;
+            this.Position = endPosition;
+            if (valid && Color == Color.White && board.WhiteKing != null) valid = board.WhiteKing.SafetyCheck(board);
+            if (valid && Color == Color.Black && board.BlackKing != null) valid = board.BlackKing.SafetyCheck(board);
 
-            this.position = real_pos;
-            if (end_point_piece != null) board.pieces.Add(end_point_piece);
+            this.Position = originalPosition;
+            if (pieceAtDestination != null) board.Pieces.Add(pieceAtDestination);
 
             return valid;
         }

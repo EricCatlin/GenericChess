@@ -8,11 +8,11 @@ namespace GenericChess
 {
     interface IPiece
     {
-        Color color { get; set; }
-        Vector2 position { get; set; }
-        bool IsMoveValid(Board board, Vector2 end_pos);
-        bool hasMoved { get; set; }
-        bool isCastling { get; set; }
+        Color Color { get; set; }
+        Vector2 Position { get; set; }
+        bool IsMoveValid(Board board, Vector2 endPosition);
+        bool HasMoved { get; set; }
+        bool IsCastling { get; set; }
     }
     public enum Color
     {
